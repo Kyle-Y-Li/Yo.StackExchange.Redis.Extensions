@@ -33,7 +33,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="StackExchange.Redis" Version="*" />
         <PackageReference Include="System.Text.Json" Version="*" />
     </ItemGroup>
 
