@@ -1,0 +1,45 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFrameworks>netcoreapp3.1;netstandard2.1;net6.0;net7.0;net8.0</TargetFrameworks>
+        <AssemblyName>Yo.StackExchange.Redis.Extensions</AssemblyName>
+        <PackageId>Yo.StackExchange.Redis.Extensions</PackageId>
+        <RootNamespace>Yo.StackExchange.Redis.Extensions</RootNamespace>
+        <Version>1.0.3</Version>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <PackageProjectUrl>https://github.com/Kyle-Y-Li/Yo.StackExchange.Redis.Extensions</PackageProjectUrl>
+        <Description>Yo.StackExchange.Redis.Extensions is a library that extends StackExchange.Redis allowing you a set of functionality needed by common applications.</Description>
+        <RepositoryUrl>https://github.com/Kyle-Y-Li/Yo.StackExchange.Redis.Extensions.git</RepositoryUrl>
+        <PackageTags></PackageTags>
+        <RepositoryType>git</RepositoryType>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <Title>$(AssemblyName)</Title>
+        <Authors>Kyle.Y.Li</Authors>
+        <IsPackable>true</IsPackable>
+        <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+        <WarningLevel>3</WarningLevel>
+        <SignAssembly>false</SignAssembly>
+        <DelaySign>false</DelaySign>
+        <LangVersion>10.0</LangVersion>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <None Include="..\..\README.md">
+            <Pack>True</Pack>
+            <PackagePath>\</PackagePath>
+        </None>
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="StackExchange.Redis" Version="*" />
+        <PackageReference Include="System.Text.Json" Version="*" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Yo.Redis.Connection\Yo.Redis.Connection.csproj" />
+        <ProjectReference Include="..\Yo.Redis.DistributedCache\Yo.Redis.DistributedCache.csproj" />
+    </ItemGroup>
+
+</Project>

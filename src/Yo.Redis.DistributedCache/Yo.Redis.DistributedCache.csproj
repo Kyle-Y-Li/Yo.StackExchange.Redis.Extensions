@@ -1,0 +1,48 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFrameworks>netcoreapp3.1;netstandard2.1;net6.0;net7.0;net8.0</TargetFrameworks>
+        <AssemblyName>Yo.Redis.DistributedCache</AssemblyName>
+        <PackageId>Yo.Redis.DistributedCache</PackageId>
+        <RootNamespace>Yo.Redis.DistributedCache</RootNamespace>
+        <Version>1.0.3</Version>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <PackageProjectUrl>https://github.com/Kyle-Y-Li/Yo.StackExchange.Redis.Extensions</PackageProjectUrl>
+        <Description>Yo.Redis.DistributedCache implementation of Microsoft.Extensions.Caching.Distributed.IDistributedCache using Redis.</Description>
+        <RepositoryUrl>https://github.com/Kyle-Y-Li/Yo.StackExchange.Redis.Extensions.git</RepositoryUrl>
+        <PackageTags></PackageTags>
+        <RepositoryType>git</RepositoryType>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <Title>$(AssemblyName)</Title>
+        <Authors>Kyle.Y.Li</Authors>
+        <IsPackable>true</IsPackable>
+        <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+        <WarningLevel>3</WarningLevel>
+        <SignAssembly>false</SignAssembly>
+        <DelaySign>false</DelaySign>
+        <LangVersion>10.0</LangVersion>
+    </PropertyGroup>
+
+    <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp3.1'">
+        <PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="3.1.32" />
+    </ItemGroup>
+    <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.1' or '$(TargetFramework)' == 'net6.0'">
+        <PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="6.0.0" />
+    </ItemGroup>
+    <ItemGroup Condition=" '$(TargetFramework)' == 'net7.0'">
+        <PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="7.0.0" />
+    </ItemGroup>
+    <ItemGroup Condition=" '$(TargetFramework)' == 'net8.0'">
+        <PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="8.0.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="StackExchange.Redis" Version="*" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Yo.Redis.Connection\Yo.Redis.Connection.csproj" />
+    </ItemGroup>
+
+</Project>

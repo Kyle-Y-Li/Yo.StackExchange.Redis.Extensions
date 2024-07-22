@@ -1,0 +1,48 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFrameworks>netcoreapp3.1;netstandard2.1;net6.0;net7.0;net8.0</TargetFrameworks>
+        <AssemblyName>Yo.Redis.Connection</AssemblyName>
+        <PackageId>Yo.Redis.Connection</PackageId>
+        <RootNamespace>Yo.Redis.Connection</RootNamespace>
+        <Version>1.0.3</Version>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <PackageProjectUrl>https://github.com/Kyle-Y-Li/Yo.StackExchange.Redis.Extensions</PackageProjectUrl>
+        <Description>Yo.StackExchange.Redis.Extensions is a library that extends StackExchange.Redis allowing you a set of functionality needed by common applications.</Description>
+        <RepositoryUrl>https://github.com/Kyle-Y-Li/Yo.StackExchange.Redis.Extensions.git</RepositoryUrl>
+        <PackageTags></PackageTags>
+        <RepositoryType>git</RepositoryType>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <Title>$(AssemblyName)</Title>
+        <Authors>Kyle.Y.Li</Authors>
+        <IsPackable>true</IsPackable>
+        <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+        <WarningLevel>3</WarningLevel>
+        <SignAssembly>false</SignAssembly>
+        <DelaySign>false</DelaySign>
+        <LangVersion>10.0</LangVersion>
+    </PropertyGroup>
+    <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp3.1'">
+        <PackageReference Include="Microsoft.Extensions.Options" Version="3.1.32" />
+        <PackageReference Include="Microsoft.Extensions.Configuration" Version="3.1.32" />
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.32" />
+    </ItemGroup>
+    <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.1' or '$(TargetFramework)' == 'net6.0'">
+        <PackageReference Include="Microsoft.Extensions.Options" Version="6.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Configuration" Version="6.0.1" />
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.1" />
+    </ItemGroup>
+    <ItemGroup Condition=" '$(TargetFramework)' == 'net7.0'">
+        <PackageReference Include="Microsoft.Extensions.Options" Version="7.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Configuration" Version="7.0.0" />
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
+    </ItemGroup>
+    <ItemGroup Condition=" '$(TargetFramework)' == 'net8.0'">
+        <PackageReference Include="Microsoft.Extensions.Options" Version="8.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.0" />
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="StackExchange.Redis" Version="*" />
+    </ItemGroup>
+</Project>
