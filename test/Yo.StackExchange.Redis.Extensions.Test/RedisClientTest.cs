@@ -6,8 +6,6 @@ using StackExchange.Redis;
 using System.Text;
 using Yo.StackExchange.Redis.Extensions.Entities;
 using Xunit;
-using Newtonsoft.Json.Linq;
-using System.Diagnostics.Metrics;
 
 namespace Yo.StackExchange.Redis.Extensions.Test;
 

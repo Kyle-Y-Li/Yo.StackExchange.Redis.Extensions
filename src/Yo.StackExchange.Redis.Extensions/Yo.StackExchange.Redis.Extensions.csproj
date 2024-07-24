@@ -5,7 +5,7 @@
         <AssemblyName>Yo.StackExchange.Redis.Extensions</AssemblyName>
         <PackageId>Yo.StackExchange.Redis.Extensions</PackageId>
         <RootNamespace>Yo.StackExchange.Redis.Extensions</RootNamespace>
-        <Version>1.0.3</Version>
+        <Version>1.0.4</Version>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <PackageProjectUrl>https://github.com/Kyle-Y-Li/Yo.StackExchange.Redis.Extensions</PackageProjectUrl>
