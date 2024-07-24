@@ -32,9 +32,12 @@
         </None>
     </ItemGroup>
 
-    <ItemGroup>
-        <PackageReference Include="System.Text.Json" Version="*" />
-    </ItemGroup>
+	<ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp3.1'">
+		<PackageReference Include="System.Text.Json" Version="6.0.9" />
+	</ItemGroup>
+	<ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.1' or '$(TargetFramework)' == 'net6.0' or '$(TargetFramework)' == 'net7.0' or '$(TargetFramework)' == 'net8.0'">
+		<PackageReference Include="System.Text.Json" Version="*" />
+	</ItemGroup>
 
     <ItemGroup>
         <ProjectReference Include="..\Yo.Redis.Connection\Yo.Redis.Connection.csproj" />

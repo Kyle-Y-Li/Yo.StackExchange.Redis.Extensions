@@ -6,6 +6,8 @@ using StackExchange.Redis;
 using System.Text;
 using Yo.StackExchange.Redis.Extensions.Entities;
 using Xunit;
+using Newtonsoft.Json.Linq;
+using System.Diagnostics.Metrics;
 
 namespace Yo.StackExchange.Redis.Extensions.Test;
 
@@ -144,5 +146,40 @@ public class RedisClientTest
         var key = Guid.NewGuid().ToString("N");
         await _redisClient.SetAsync(key, _value);
         Assert.Equal(await _redisClient.GetTAsync<string>(key), Encoding.UTF8.GetString(_value));
+    }
+
+    [Fact]
+    public async Task SAddTestAsync()
+    {
+        var key = Guid.NewGuid().ToString("N");
+        Assert.True(await _redisClient.SAddAsync(key, _value, $"{_value}1") > 0);
+    }
+
+    [Fact]
+    public async Task SPopAsyncTestAsync()
+    {
+        var key = Guid.NewGuid().ToString("N");
+        await _redisClient.SPopAsync(key);
+    }
+
+    [Fact]
+    public async Task SCardTestAsync()
+    {
+        var key = Guid.NewGuid().ToString("N");
+        Assert.True(await _redisClient.SCardAsync(key) == 0);
+    }
+
+    [Fact]
+    public async Task ZAddTestAsync()
+    {
+        var key = Guid.NewGuid().ToString("N");
+        Assert.True(await _redisClient.ZAddAsync(key, new SortedSetEntry(_value, 1), new SortedSetEntry($"{_value}1", 2)) == 0);
+    }
+
+    [Fact]
+    public async Task ZRemRangeByRankTestAsync()
+    {
+        var key = Guid.NewGuid().ToString("N");
+        Assert.True(await _redisClient.ZRemRangeByRankAsync(key, 0, 1) == 0);
     }
 }

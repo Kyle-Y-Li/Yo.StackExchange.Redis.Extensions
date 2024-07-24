@@ -1,6 +1,7 @@
 ﻿using StackExchange.Redis;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Threading.Tasks;
 using Yo.StackExchange.Redis.Extensions.Entities;
 using Yo.StackExchange.Redis.Extensions.Enum;
@@ -12,6 +13,46 @@ namespace Yo.StackExchange.Redis.Extensions;
 /// </summary>
 public partial interface IRedisClient
 {
+    /// <summary>Set the value of the specified key</summary>
+    /// <param name="key">Key to be set</param>
+    /// <param name="value">Value to be set</param>
+    /// <param name="expiry">Expiration time</param>
+    /// <param name="redisSetMode">Nx, Xx</param>
+    /// <param name="flags">Flags used for this operation</param>
+    /// <returns>Set successfully, return true</returns>
+    /// <remarks>https://redis.io/commands/set</remarks>
+    Task<bool> SetAsync(RedisKey key, RedisValue value, TimeSpan? expiry = null, RedisSetModeEnum redisSetMode = RedisSetModeEnum.None, CommandFlags flags = CommandFlags.None);
+
+    /// <summary>Set the value only if key does not exist</summary>
+    /// <param name="key">The key to be set</param>
+    /// <param name="value">The value to be set</param>
+    /// <param name="expiry">Expiration time</param>
+    /// <param name="flags">Flags used for this operation</param>
+    /// <returns>If key does not exist and the setting is successful, return true</returns>
+    /// <remarks>https://redis.io/commands/setnx</remarks>
+    Task<bool> SetNxAsync(RedisKey key, RedisValue value, TimeSpan? expiry = null, CommandFlags flags = CommandFlags.None);
+
+    /// <summary>Set the value of the specified key</summary>
+    /// <typeparam name="TSource"></typeparam>
+    /// <param name="key">Key to set</param>
+    /// <param name="value">Value to set</param>
+    /// <param name="expiry">Expiration time</param>
+    /// <param name="redisSetMode">Nx, Xx</param>
+    /// <param name="flags">Flags used for this operation</param>
+    /// <returns>Set successfully, return true</returns>
+    /// <remarks>https://redis.io/commands/set</remarks>
+    Task<bool> SetTAsync<TSource>(RedisKey key, TSource value, TimeSpan? expiry = null, RedisSetModeEnum redisSetMode = RedisSetModeEnum.None, CommandFlags flags = CommandFlags.None);
+
+    /// <summary>Set the value only if the key does not exist</summary>
+    /// <typeparam name="TSource"></typeparam>
+    /// <param name="key">Key to set</param>
+    /// <param name="value">Value to be set</param>
+    /// <param name="expiry">Expiration time</param>
+    /// <param name="flags">Flags used for this operation</param>
+    /// <returns>If key does not exist and is set successfully, return true</returns>
+    /// <remarks>https://redis.io/commands/setnx</remarks>
+    Task<bool> SetNxTAsync<TSource>(RedisKey key, TSource value, TimeSpan? expiry = null, CommandFlags flags = CommandFlags.None);
+
     /// <summary>
     /// If the key already exists and is a string, the APPEND command appends the specified value to the end of the original value of the key
     /// </summary>
@@ -21,25 +62,6 @@ public partial interface IRedisClient
     /// <returns>The length of the string after the append operation</returns>
     /// <remarks>https://redis.io/commands/append</remarks>
     Task<long> AppendAsync(RedisKey key, RedisValue value, CommandFlags flags = CommandFlags.None);
-
-    /// <summary>
-    /// Add one or more members to a collection
-    /// </summary>
-    /// <param name="key">The key of the collection</param>
-    /// <param name="values">The values ​​to add to the collection</param>
-    /// <returns>The number of elements added to the collection, excluding all elements that already exist in the collection</returns>
-    /// <remarks>https://redis.io/commands/sadd</remarks>
-    Task<long> SAddAsync(RedisKey key, params RedisValue[] values);
-
-    /// <summary>
-    /// Add one or more members to a set
-    /// </summary>
-    /// <param name="key">The key of the set</param>
-    /// <param name="values">The values ​​to add to the set</param>
-    /// <param name="flags">The flags to use for this operation</param>
-    /// <returns>The number of elements added to the set, excluding any elements that already exist in the set</returns>
-    /// <remarks>https://redis.io/commands/sadd</remarks>
-    Task<long> SAddAsync(RedisKey key, RedisValue[] values, CommandFlags flags);
 
     /// <summary>Used to delete a key if it exists</summary>
     /// <param name="keys">Keys to delete</param>
@@ -107,25 +129,6 @@ public partial interface IRedisClient
     /// <remarks>https://redis.io/commands/hmset</remarks>
     /// <returns>Set successfully, return true</returns>
     Task<bool> HMSetAsync(RedisKey key, KeyValuePair<RedisValue, RedisValue>[] fieldNameValuePairs, CommandFlags flags);
-
-    /// <summary>Set the value of the specified key</summary>
-    /// <param name="key">Key to be set</param>
-    /// <param name="value">Value to be set</param>
-    /// <param name="expiry">Expiration time</param>
-    /// <param name="redisSetMode">Nx, Xx</param>
-    /// <param name="flags">Flags used for this operation</param>
-    /// <returns>Set successfully, return true</returns>
-    /// <remarks>https://redis.io/commands/set</remarks>
-    Task<bool> SetAsync(RedisKey key, RedisValue value, TimeSpan? expiry = null, RedisSetModeEnum redisSetMode = RedisSetModeEnum.None, CommandFlags flags = CommandFlags.None);
-
-    /// <summary>Set the value only if key does not exist</summary>
-    /// <param name="key">The key to be set</param>
-    /// <param name="value">The value to be set</param>
-    /// <param name="expiry">Expiration time</param>
-    /// <param name="flags">Flags used for this operation</param>
-    /// <returns>If key does not exist and the setting is successful, return true</returns>
-    /// <remarks>https://redis.io/commands/setnx</remarks>
-    Task<bool> SetNxAsync(RedisKey key, RedisValue value, TimeSpan? expiry = null, CommandFlags flags = CommandFlags.None);
 
     /// <summary>Set one or more key-value pairs at the same time</summary>
     /// <param name="keyValuePairs">key-value pair</param>
@@ -268,26 +271,99 @@ public partial interface IRedisClient
     /// <remarks>https://redis.io/commands/rpoplpush</remarks>
     Task<RedisValue> RPopLPushAsync(RedisKey sourceKey, RedisKey destinationKey, CommandFlags flags = CommandFlags.None);
 
-    /// <summary>Set the value of the specified key</summary>
-    /// <typeparam name="TSource"></typeparam>
-    /// <param name="key">Key to set</param>
-    /// <param name="value">Value to set</param>
-    /// <param name="expiry">Expiration time</param>
-    /// <param name="redisSetMode">Nx, Xx</param>
-    /// <param name="flags">Flags used for this operation</param>
-    /// <returns>Set successfully, return true</returns>
-    /// <remarks>https://redis.io/commands/set</remarks>
-    Task<bool> SetTAsync<TSource>(RedisKey key, TSource value, TimeSpan? expiry = null, RedisSetModeEnum redisSetMode = RedisSetModeEnum.None, CommandFlags flags = CommandFlags.None);
+    /// <summary>
+    /// Add one or more members to a collection
+    /// </summary>
+    /// <param name="key">The key of the collection</param>
+    /// <param name="values">The values ​​to add to the collection</param>
+    /// <returns>The number of elements added to the collection, excluding all elements that already exist in the collection</returns>
+    /// <remarks>https://redis.io/commands/sadd</remarks>
+    Task<long> SAddAsync(RedisKey key, params RedisValue[] values);
 
-    /// <summary>Set the value only if the key does not exist</summary>
-    /// <typeparam name="TSource"></typeparam>
-    /// <param name="key">Key to set</param>
-    /// <param name="value">Value to be set</param>
-    /// <param name="expiry">Expiration time</param>
-    /// <param name="flags">Flags used for this operation</param>
-    /// <returns>If key does not exist and is set successfully, return true</returns>
-    /// <remarks>https://redis.io/commands/setnx</remarks>
-    Task<bool> SetNxTAsync<TSource>(RedisKey key, TSource value, TimeSpan? expiry = null, CommandFlags flags = CommandFlags.None);
+    /// <summary>
+    /// Add one or more members to a set
+    /// </summary>
+    /// <param name="key">The key of the set</param>
+    /// <param name="values">The values ​​to add to the set</param>
+    /// <param name="flags">The flags to use for this operation</param>
+    /// <returns>The number of elements added to the set, excluding any elements that already exist in the set</returns>
+    /// <remarks>https://redis.io/commands/sadd</remarks>
+    Task<long> SAddAsync(RedisKey key, RedisValue[] values, CommandFlags flags);
+
+    /// <summary>
+    /// Removes and returns a random element from the set value stored at key.
+    /// </summary>
+    /// <param name="key">The key of the set.</param>
+    /// <param name="flags">The flags to use for this operation.</param>
+    /// <returns>The removed element, or <see cref="P:StackExchange.Redis.RedisValue.Null" /> when key does not exist.</returns>
+    /// <remarks>https://redis.io/commands/spop"</remarks>
+    Task<RedisValue> SPopAsync(RedisKey key, CommandFlags flags = CommandFlags.None);
+
+    /// <summary>
+    /// Adds all the specified members with the specified scores to the sorted set stored at key. It is possible to specify multiple score / member pairs. If a specified member is already a member of the sorted set, the score is updated and the element reinserted at the right position to ensure the correct ordering.
+    /// If key does not exist, a new sorted set with the specified members as sole members is created, like if the sorted set was empty.If the key exists but does not hold a sorted set, an error is returned.
+    /// </summary>
+    /// <param name="key">The key of the sorted set.</param>
+    /// <param name="values">The members and values to add/update to the sorted set.</param>
+    /// <returns>The number of elements changed.</returns>
+    /// <remarks>https://redis.io/commands/zadd"</remarks>
+    Task<long> ZAddAsync(RedisKey key, params SortedSetEntry[] values);
+
+    /// <summary>
+    /// Adds all the specified members with the specified scores to the sorted set stored at key. It is possible to specify multiple score / member pairs. If a specified member is already a member of the sorted set, the score is updated and the element reinserted at the right position to ensure the correct ordering.
+    /// If key does not exist, a new sorted set with the specified members as sole members is created, like if the sorted set was empty.If the key exists but does not hold a sorted set, an error is returned.
+    /// </summary>
+    /// <param name="key">The key of the sorted set.</param>
+    /// <param name="values">The members and values to add/update to the sorted set.</param>
+    /// <param name="when">What conditions to add the element under (defaults to always).</param>
+    /// <param name="flags">The flags to use for this operation.</param>
+    /// <returns>The number of elements changed.</returns>
+    /// <remarks>https://redis.io/commands/zadd"</remarks>
+    Task<long> ZAddAsync(RedisKey key, SortedSetEntry[] values, SortedSetWhen when, CommandFlags flags = CommandFlags.None);
+
+    /// <summary>
+    /// Increments the score of member in the sorted set stored at key by increment. If member does not exist in the sorted set, it is added with increment as its score (as if its previous score was 0.0).
+    /// </summary>
+    /// <param name="key">The key of the sorted set.</param>
+    /// <param name="member">The member to increment.</param>
+    /// <param name="value">The amount to increment by.</param>
+    /// <param name="flags">The flags to use for this operation.</param>
+    /// <returns>The new score of member.</returns>
+    /// <remarks>https://redis.io/commands/zincrby</remarks>
+    Task<double> ZIncrbyAsync(RedisKey key, RedisValue member, double value, CommandFlags flags = CommandFlags.None);
+
+    /// <summary>
+    /// Removes the specified members from the sorted set stored at key. Non-existing members are ignored.
+    /// </summary>
+    /// <param name="key">The key of the sorted set.</param>
+    /// <param name="members">The members to remove.</param>
+    /// <returns>The number of members removed from the sorted set, not including Non-existing members.</returns>
+    /// <remarks>https://redis.io/commands/zrem</remarks>
+    Task<long> ZRemAsync(RedisKey key, params RedisValue[] members);
+
+    /// <summary>
+    /// Removes the specified members from the sorted set stored at key. Non-existing members are ignored.
+    /// </summary>
+    /// <param name="key">The key of the sorted set.</param>
+    /// <param name="members">The members to remove.</param>
+    /// <param name="flags">The flags to use for this operation.</param>
+    /// <returns>The number of members removed from the sorted set, not including Non-existing members.</returns>
+    /// <remarks>https://redis.io/commands/zrem</remarks>
+    Task<long> ZRemAsync(RedisKey key, RedisValue[] members, CommandFlags flags);
+
+    /// <summary>
+    /// Removes all elements in the sorted set stored at key with rank between start and stop.
+    /// Both start and stop are 0 -based indexes with 0 being the element with the lowest score.
+    /// These indexes can be negative numbers, where they indicate offsets starting at the element with the highest score.
+    /// For example: -1 is the element with the highest score, -2 the element with the second highest score and so forth.
+    /// </summary>
+    /// <param name="key">The key of the sorted set.</param>
+    /// <param name="start">The minimum rank to remove.</param>
+    /// <param name="stop">The maximum rank to remove.</param>
+    /// <param name="flags">The flags to use for this operation.</param>
+    /// <returns>The number of elements removed.</returns>
+    /// <remarks>https://redis.io/commands/zremrangebyrank"</remarks>
+    Task<long> ZRemRangeByRankAsync(RedisKey key, long start, long stop, CommandFlags flags = CommandFlags.None);
 
     /// <summary>Open distributed lock, return null if timeout</summary>
     /// <param name="key">Lock name</param>

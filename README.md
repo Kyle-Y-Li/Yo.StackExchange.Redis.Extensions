@@ -60,6 +60,26 @@ await _redisClient.RPopAsync("key");
 
 await _redisClient.RPopLPushAsync("sourceKey", "destinationKey");
 
+//set
+var value = await _redisClient.SCardAsync("key");
+var value = await _redisClient.SIsMemberAsync("key", "value");
+var value = await _redisClient.SMembersAsync("key");
+var value = await _redisClient.SRandMemberAsync("key", 1);
+
+await _redisClient.SAddAsync("key", "value1", "value2");
+var value = await _redisClient.SPopAsync("key");
+
+//zset
+var value = await _redisClient.ZCardAsync("key");
+var value = await _redisClient.ZRangeAsync("key", 0, 1);
+var value = await _redisClient.ZRangeByScoreAsync("key", 0, 1);
+var value = await _redisClient.ZScoreAsync("key", "member");
+
+var value = await _redisClient.ZAddAsync("key", new SortedSetEntry("value1", 1), new SortedSetEntry("value2", 2)); 
+var value = await _redisClient.ZIncrbyAsync("key", "member", 1);
+var value = await _redisClient.ZRemAsync("key", "value1", "value2");
+var value = await _redisClient.ZRemRangeByRankAsync("key", 0, 1);
+
 //lock
 var result = await redisClient.LockAsync<string>(key, TimeSpan.FromMinutes(5), async () =>
 {
