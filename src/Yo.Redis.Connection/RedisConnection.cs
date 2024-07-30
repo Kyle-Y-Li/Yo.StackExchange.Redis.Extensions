@@ -28,6 +28,8 @@ public class RedisConnection : IRedisConnection, IDisposable
         _defaultDatabase = redisOptions.DefaultDatabase ?? -1;
         if (_defaultDatabase > -1) _connectionOptions.DefaultDatabase = _defaultDatabase;
         _defaultDatabase = _connectionOptions.DefaultDatabase ?? -1;
+
+        if (redisOptions.ReconnectRetryPolicy != null) _connectionOptions.ReconnectRetryPolicy = redisOptions.ReconnectRetryPolicy;
     }
 
     private void Connect()

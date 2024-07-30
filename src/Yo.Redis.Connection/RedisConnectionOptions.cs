@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Options;
+using StackExchange.Redis;
 
 namespace Yo.Redis.Connection;
 
@@ -21,6 +22,11 @@ public class RedisConnectionOptions : IOptions<RedisConnectionOptions>
     /// Instance name
     /// </summary>
     public string InstanceName { get; set; }
+
+    /// <summary>
+    /// The retry policy to be used for connection reconnects
+    /// </summary>
+    public IReconnectRetryPolicy ReconnectRetryPolicy { get; set; }
 
     RedisConnectionOptions IOptions<RedisConnectionOptions>.Value => this;
 }
